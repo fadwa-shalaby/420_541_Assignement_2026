@@ -44,7 +44,7 @@ public class CharacterMovement : MonoBehaviour
         moveDirection = transform.forward * moveZ;
 
         // 3. Handle Jump Input
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump")) //&& isGrounded)
         {
             jumpRequested = true;
         }
