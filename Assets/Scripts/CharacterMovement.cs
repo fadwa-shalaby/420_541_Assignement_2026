@@ -7,7 +7,8 @@ public class CharacterMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 5f;      // units per second
-    [SerializeField] private float runSpeed = 7f;      // units per second
+    [SerializeField] private float runSpeed = 7f;
+    [SerializeField] private float speed;     // units per second
     [SerializeField] private float turnSpeed = 150f;    // degrees per second
     [SerializeField] private float jumpForce = 5f;      // strength of the jump
     [SerializeField] private float doubleJumpForce = 4f;
@@ -23,6 +24,7 @@ public class CharacterMovement : MonoBehaviour
     private bool jumpRequested = false; // set in Update(), used later
     private bool doubleJumpRequested = false; // set in TryDoubleJump()
     private bool hasDoubleJumped = false;     // one per jump
+    private bool isRunning = false;     // true when running, false when walking
 
     public bool IsGrounded => isGrounded;
 
@@ -48,15 +50,38 @@ public class CharacterMovement : MonoBehaviour
         float moveZ = Input.GetAxisRaw("Vertical");  // W/S or Up/Down forward/backward
 
         // Rotate the player transform in Update for responsive turning visuals
-        transform.Rotate(0f, turnInput * turnSpeed * Time.deltaTime, 0f);
+        //transform.Rotate(0f, turnInput * turnSpeed * Time.deltaTime, 0f);
+        Vector3 forward = Camera.main.transform.forward;
+        Vector3 right = Camera.main.transform.right;
+
+        //ignore the y axis for movement
+        forward.y = 0f;
+        right.y = 0f;
 
         // Calculate forward movement relative to current facing direction
-        moveDirection = transform.forward * moveZ;
+        moveDirection = forward * moveZ + right * turnInput;
+
+        if (moveDirection.magnitude > 0f)
+        {
+            transform.forward = moveDirection.normalized; // face the direction of movement
+        }
 
         // 3. Handle Jump Input
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             jumpRequested = true;
+        }
+
+        // 4. Handle Run Input
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            isRunning = true;
+            speed = runSpeed;
+        }
+        else
+        {
+            isRunning = false;
+            speed = moveSpeed;
         }
     }
 
@@ -88,7 +113,7 @@ public class CharacterMovement : MonoBehaviour
     private void MovePlayer()
     {
         // Calculate velocity based on current forward vector
-        Vector3 targetVelocity = moveDirection * moveSpeed;
+        Vector3 targetVelocity = moveDirection * speed;
 
         // Apply movement while preserving vertical velocity (gravity/jumping)
         rb.linearVelocity = new Vector3(targetVelocity.x, rb.linearVelocity.y, targetVelocity.z);
