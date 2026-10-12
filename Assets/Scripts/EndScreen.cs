@@ -10,7 +10,7 @@ public class EndScreen : MonoBehaviour
     { 
         // No ScoreManager object exists in this scene, but we can 
         // still read the static FinalScore through the class name 
-        finalScoreText.text = "Final Score: " + ScoreManager.FinalScore; 
+        
     } 
 } 
 
