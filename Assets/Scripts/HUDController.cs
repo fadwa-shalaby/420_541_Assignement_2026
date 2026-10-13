@@ -15,7 +15,7 @@ public class HUDController : MonoBehaviour
     private void UpdateScore()
     {
         // The Score property from Lab 4: anyone can read it
-        //scoreText.text = "Score: " + ScoreManager.Instance.Score;
+        scoreText.text = "Score: " + ScoreManager.Instance.Score;
     }
  
 }

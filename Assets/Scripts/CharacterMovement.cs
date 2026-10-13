@@ -147,7 +147,7 @@ public class CharacterMovement : MonoBehaviour
         return true;
     }
 
-    private void resetLevel()
+    public void resetLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
