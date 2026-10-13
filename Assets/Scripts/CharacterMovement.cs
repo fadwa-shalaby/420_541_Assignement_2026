@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterMovement : MonoBehaviour
@@ -9,13 +10,17 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;      // units per second
     [SerializeField] private float runSpeed = 7f;
     [SerializeField] private float speed;     // units per second
-    [SerializeField] private float turnSpeed = 150f;    // degrees per second
+    [SerializeField] private Vector3 startPosition; // starting position of the player
     [SerializeField] private float jumpForce = 5f;      // strength of the jump
     [SerializeField] private float doubleJumpForce = 4f;
 
     [Header("Ground Check Settings")]
     [SerializeField] private float groundDistance = 0.5f; // ray length
-    [SerializeField] private LayerMask groundMask;        // ground layers
+    [SerializeField] private LayerMask groundMask; 
+    
+    [Header("Health Settings")]
+    [SerializeField] private int maxHealth = 3;
+    [SerializeField] private int currentHealth;
 
     private Rigidbody rb;               // the physics body we move
     private Vector3 moveDirection;      // worked out from input in Update()
@@ -32,7 +37,18 @@ public class CharacterMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeRotation;
+        startPosition = transform.position;
+        currentHealth = maxHealth;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("DeathPlane"))
+        {
+            resetLevel();
+        }
+    }
+
 
     private void Update()
     {
@@ -129,5 +145,20 @@ public class CharacterMovement : MonoBehaviour
         doubleJumpRequested = true;
         hasDoubleJumped = true;
         return true;
+    }
+
+    private void resetLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    // if a trap is touched the player will lose one health point and when health reaches 0 the level will reset
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            resetLevel();
+        }
     }
 }
