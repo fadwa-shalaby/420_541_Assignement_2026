@@ -13,6 +13,7 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private Vector3 startPosition; // starting position of the player
     [SerializeField] private float jumpForce = 5f;      // strength of the jump
     [SerializeField] private float doubleJumpForce = 4f;
+    [SerializeField] private float maxChargeTime = 3f;
 
     [Header("Ground Check Settings")]
     [SerializeField] private float groundDistance = 0.5f; // ray length
@@ -30,8 +31,12 @@ public class CharacterMovement : MonoBehaviour
     private bool doubleJumpRequested = false; // set in TryDoubleJump()
     private bool hasDoubleJumped = false;     // one per jump
     private bool isRunning = false;     // true when running, false when walking
+    private float chargeTime = 0.0f;
+    private bool isCharging = false;
+    private float jumpForceToApply;
 
     public bool IsGrounded => isGrounded;
+    public float SpeedMultiplier { get; set; } = 1f;
 
     private void Start()
     {
@@ -83,9 +88,27 @@ public class CharacterMovement : MonoBehaviour
         }
 
         // 3. Handle Jump Input
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded && !isCharging)
         {
-            jumpRequested = true;
+            chargeTime = 0.0f;
+            isCharging = true;
+        }
+
+        if (Input.GetButton("Jump") && isCharging)
+        {
+            chargeTime += Time.deltaTime;
+            chargeTime = Mathf.Clamp(chargeTime, 0.0f, maxChargeTime);
+
+            // Automatically jump after 3 seconds
+            if (chargeTime >= maxChargeTime)
+            {
+                ExecuteChargedJump();
+            }
+        }
+
+        if (Input.GetButtonUp("Jump") && isCharging)
+        {
+            ExecuteChargedJump();
         }
 
         // 4. Handle Run Input
@@ -107,7 +130,7 @@ public class CharacterMovement : MonoBehaviour
  
         if (jumpRequested)
         {
-            Jump(jumpForce);
+            Jump(jumpForceToApply);
             jumpRequested = false;
         }
  
@@ -126,10 +149,26 @@ public class CharacterMovement : MonoBehaviour
         rb.AddForce(Vector3.up * force, ForceMode.VelocityChange);
     }
 
+    private void ExecuteChargedJump()
+    {
+       if (!isCharging || !isGrounded)
+        return;
+
+        float chargePercentage = chargeTime / maxChargeTime;
+
+        float finalJumpForce = Mathf.Lerp(jumpForce, jumpForce * 2.5f, chargePercentage);
+
+        jumpForceToApply = finalJumpForce;
+        jumpRequested = true;
+
+        isCharging = false;
+        chargeTime = 0.0f;
+    }
+
     private void MovePlayer()
     {
         // Calculate velocity based on current forward vector
-        Vector3 targetVelocity = moveDirection * speed;
+        Vector3 targetVelocity = moveDirection * speed * SpeedMultiplier;
 
         // Apply movement while preserving vertical velocity (gravity/jumping)
         rb.linearVelocity = new Vector3(targetVelocity.x, rb.linearVelocity.y, targetVelocity.z);
