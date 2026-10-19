@@ -24,7 +24,7 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private int currentHealth;
 
     private Rigidbody rb;               // the physics body we move
-    private Vector3 moveDirection;      // worked out from input in Update()
+    public Vector3 moveDirection;      // worked out from input in Update()
     private float turnInput;            // horizontal input for rotation
     private bool isGrounded;            // true when standing on the ground
     private bool jumpRequested = false; // set in Update(), used later
@@ -36,6 +36,7 @@ public class CharacterMovement : MonoBehaviour
     private float jumpForceToApply;
 
     public bool IsGrounded => isGrounded;
+    public int CurrentHealth => currentHealth;
     public float SpeedMultiplier { get; set; } = 1f;
 
     private void Start()
@@ -86,6 +87,7 @@ public class CharacterMovement : MonoBehaviour
         {
             transform.forward = moveDirection.normalized; // face the direction of movement
         }
+        moveDirection = moveDirection.normalized ;
 
         // 3. Handle Jump Input
         if (Input.GetButtonDown("Jump") && isGrounded && !isCharging)
