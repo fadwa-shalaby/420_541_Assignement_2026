@@ -8,6 +8,8 @@ public class EndScreen : MonoBehaviour
   
     private void Start() 
     { 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         finalScoreText.text = $"Level Complete!\nFinal Score: {ScoreManager.FinalScore}";
     } 
 } 
