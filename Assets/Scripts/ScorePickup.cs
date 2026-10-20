@@ -16,7 +16,7 @@ public class ScorePickup : MonoBehaviour
             // Add our points through the ScoreManager singleton
             ScoreManager.Instance.AddScore(points);
             // Sound and particles
-            GetComponent<AudioSource>().PlayOneShot(pickupSound);
+            AudioSource.PlayClipAtPoint(pickupSound, transform.position);
             Instantiate(pickupEffect, transform.position, Quaternion.identity);
 
             // Remove the coin from the scene: it's collected once and gone

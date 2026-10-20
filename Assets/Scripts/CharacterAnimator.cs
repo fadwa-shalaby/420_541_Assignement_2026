@@ -8,11 +8,18 @@ public class CharacterAnimator : MonoBehaviour
     private CharacterMovement movement; // our movement script (for IsGrounded)
     private Rigidbody rb;            // used to read how fast the player moves
 
+    [Header("Double Jump")]
+    [SerializeField] private AudioClip doubleJumpSound;
+    [SerializeField] private GameObject doubleJumpEffect;
+
+    private AudioSource audioSource;
+
    private void Start()
     {
         animator = GetComponent<Animator>();
         movement = GetComponent<CharacterMovement>();
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
  
     private void Update()
@@ -36,6 +43,17 @@ public class CharacterAnimator : MonoBehaviour
             if (Input.GetButtonDown("Jump") && movement.TryDoubleJump())
             {
                 animator.SetTrigger("doDoubleJump");
+
+                // Play the double jump sound
+                if (doubleJumpSound != null && audioSource != null)
+                {
+                    audioSource.PlayOneShot(doubleJumpSound);
+                }
+            }
+            // Instantiate the double jump effect
+            if (doubleJumpEffect != null)
+            {
+                Instantiate(doubleJumpEffect, transform.position, Quaternion.identity);
             }
         }
     }

@@ -35,6 +35,8 @@ public class CharacterMovement : MonoBehaviour
     private bool isCharging = false;
     private float jumpForceToApply;
 
+    private PlayerPowerUps powerUps; // reference to the PlayerPowerUps script
+
     public bool IsGrounded => isGrounded;
     public int CurrentHealth => currentHealth;
     public float SpeedMultiplier { get; set; } = 1f;
@@ -42,6 +44,7 @@ public class CharacterMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        powerUps = GetComponent<PlayerPowerUps>();
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         startPosition = transform.position;
         currentHealth = maxHealth;
@@ -181,7 +184,7 @@ public class CharacterMovement : MonoBehaviour
     public bool TryDoubleJump()
     {
         // Not allowed on the ground, or if it was already used
-        if (isGrounded || hasDoubleJumped) return false;
+        if (isGrounded || hasDoubleJumped || powerUps == null || !powerUps.HasJumpBoost) return false;
  
         doubleJumpRequested = true;
         hasDoubleJumped = true;
