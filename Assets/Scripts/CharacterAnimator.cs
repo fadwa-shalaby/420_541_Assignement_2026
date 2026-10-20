@@ -44,10 +44,12 @@ public class CharacterAnimator : MonoBehaviour
             {
                 animator.SetTrigger("doDoubleJump");
 
-                // Play the double jump sound
-                if (doubleJumpSound != null && audioSource != null)
+                if (doubleJumpSound != null)
                 {
-                    audioSource.PlayOneShot(doubleJumpSound);
+                    if (audioSource != null)
+                        audioSource.PlayOneShot(doubleJumpSound);
+                    else
+                        AudioSource.PlayClipAtPoint(doubleJumpSound, transform.position);
                 }
             }
             // Instantiate the double jump effect
@@ -58,4 +60,3 @@ public class CharacterAnimator : MonoBehaviour
         }
     }
 }
-
