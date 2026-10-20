@@ -3905,7 +3905,7 @@ MonoBehaviour:
   visuals: {fileID: 1604325250898590081}
   pickupSound: {fileID: 8300000, guid: ffbe60e44df7b7744afa148b77d2d30f, type: 3}
   pickupEffect: {fileID: 4964511954956108832, guid: 2ff079b756134ee4887202e4c05136ab, type: 3}
-  powerUpType: Score
+  powerUpType: Jump
 --- !u!1001 &2539922711083916074
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4178,7 +4178,7 @@ MonoBehaviour:
   visuals: {fileID: 4675568075535590156}
   pickupSound: {fileID: 8300000, guid: ffbe60e44df7b7744afa148b77d2d30f, type: 3}
   pickupEffect: {fileID: 4964511954956108832, guid: 2ff079b756134ee4887202e4c05136ab, type: 3}
-  powerUpType: Score
+  powerUpType: Speed
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -18,7 +18,7 @@ public class PowerUpPickup : MonoBehaviour
         if (collected) return;
 
         // Only the player has a PlayerPowerUps component
-        PlayerPowerUps powerUps = other.GetComponent<PlayerPowerUps>();
+        PlayerPowerUps powerUps = other.GetComponentInParent<PlayerPowerUps>();
         if (powerUps == null) return;
 
         if (powerUpType == "Score")
@@ -33,19 +33,23 @@ public class PowerUpPickup : MonoBehaviour
         }
  
         // Sound and particles
-        AudioSource.PlayClipAtPoint(pickupSound, transform.position);
-        Instantiate(pickupEffect, transform.position, Quaternion.identity);
+        if (pickupSound != null)
+            AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+        if (pickupEffect != null)
+            Instantiate(pickupEffect, transform.position, Quaternion.identity);
  
         // Disappear, and call Reappear() after respawnDelay seconds
         collected = true;
-        visuals.SetActive(false);
+        if (visuals != null)
+            visuals.SetActive(false);
         GetComponent<Collider>().enabled = false;
         Invoke(nameof(Reappear), respawnDelay);
     }
  
     private void Reappear()
     {
-        visuals.SetActive(true);
+        if (visuals != null)
+            visuals.SetActive(true);
         GetComponent<Collider>().enabled = true;
         collected = false;
     }

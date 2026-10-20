@@ -46,31 +46,32 @@ public class PlayerPowerUps : MonoBehaviour
 
     private void Update()
     {
-        if (SpeedTimeLeft <= 0f) return; // no boost running
-
-        SpeedTimeLeft -= Time.deltaTime;
-
-        if (SpeedTimeLeft <= 0f)
+        if (SpeedTimeLeft > 0f)
         {
-            movement.SpeedMultiplier = 1f; // back to normal speed
-        }
-        
-        if (JumpTimeLeft <= 0f) return; // no boost running
-
-        JumpTimeLeft -= Time.deltaTime;
-
-        if (JumpTimeLeft <= 0f)
-        {
-            JumpTimeLeft = 0f; // back to normal jump
+            SpeedTimeLeft -= Time.deltaTime;
+            if (SpeedTimeLeft <= 0f)
+            {
+                SpeedTimeLeft = 0f;
+                movement.SpeedMultiplier = 1f; // back to normal speed
+            }
         }
 
-        if (ScoreTimeLeft <= 0f) return; // no boost running
-
-        ScoreTimeLeft -= Time.deltaTime;
-
-        if (ScoreTimeLeft <= 0f)
+        if (JumpTimeLeft > 0f)
         {
-            ScoreTimeLeft = 0f; // back to normal score
+            JumpTimeLeft -= Time.deltaTime;
+            if (JumpTimeLeft <= 0f)
+            {
+                JumpTimeLeft = 0f; // back to normal jump
+            }
+        }
+
+        if (ScoreTimeLeft > 0f)
+        {
+            ScoreTimeLeft -= Time.deltaTime;
+            if (ScoreTimeLeft <= 0f)
+            {
+                ScoreTimeLeft = 0f; // back to normal score
+            }
         }
     }
 }
