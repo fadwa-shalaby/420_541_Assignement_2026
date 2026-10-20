@@ -3567,6 +3567,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2102420408}
   - component: {fileID: 2102420407}
+  - component: {fileID: 2102420409}
   m_Layer: 0
   m_Name: LevelEnd
   m_TagString: Untagged
@@ -3611,6 +3612,18 @@ Transform:
   - {fileID: 221069747}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2102420409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2102420406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d68e441f60ab3e4899d5e47ebe79254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelEndTrigger
 --- !u!1 &2104195840 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6799155194134901007, guid: e3fe52d757dbacb43a943a5d311369b8, type: 3}

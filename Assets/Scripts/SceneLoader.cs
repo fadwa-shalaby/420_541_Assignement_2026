@@ -9,6 +9,11 @@ public class SceneLoader : MonoBehaviour
     // Build Profiles scene list or Unity will refuse to load it. 
     public void LoadScene(string sceneName) 
     { 
+        if (sceneName == "SampleScene")
+        {
+            ScoreManager.ResetForNewGame();
+        }
+
         SceneManager.LoadScene(sceneName); 
     } 
   

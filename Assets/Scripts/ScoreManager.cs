@@ -25,7 +25,16 @@ public class ScoreManager : MonoBehaviour
             return;
         }
          // Otherwise, this is the one and only ScoreManager
-                 Instance = this;
+        Instance = this;
+        Score = FinalScore;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
 
     // Called by coins when they're collected
@@ -40,5 +49,14 @@ public class ScoreManager : MonoBehaviour
     public void SaveFinalScore()
     {
         FinalScore = Score;
+    }
+
+    public static void ResetForNewGame()
+    {
+        FinalScore = 0;
+        if (Instance != null)
+        {
+            Instance.Score = 0;
+        }
     }
 }
